@@ -5,6 +5,6 @@ account: dimmestp
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2279866
-bundleId: 3291278
+bundleId: 3319447
 url: https://dimmestp.shinyapps.io/who_africa_app/
-when: 1592562553.04752
+when: 1593177230.76986
