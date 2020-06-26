@@ -21,7 +21,6 @@ sidebar <- dashboardSidebar(
     radioButtons("y_axis_value","Plot y-axis :",c("Total" = "","Per 10k pop" = "_per_10k"), inline = TRUE),
     radioButtons("y_axis_scale","Plot y-axis scale :",c("Linear","Log10"), inline = TRUE),
     sidebarMenu(
-        menuItem("Sequencing", tabName = "seq"),
         menuItem("Data Tables", tabName = "tables"),
         menuItem("About", tabName = "about")),
     width = "15em")
@@ -74,26 +73,7 @@ body <- dashboardBody(
                 tabPanel("Latest Cumulative Counts", DT::dataTableOutput("deaths_cumulative_table")),
                 tabPanel("Doubling Times", DT::dataTableOutput("deaths_doubling_table")),
                 tabPanel("Time Series", DT::dataTableOutput("deaths_time_series_table")))),
-        tabItem(
-            tabName = "seq",
-            fluidRow(
-                box(
-                    h2("SARS-CoV-2 genomes sequenced", style="color:Orange"),
-                    h3(textOutput("date_seq"))),
-                box(
-                    h3(textOutput("seq_text_overview")))),
-            fluidRow(
-                box(
-                    leafletOutput(
-                        "seq_map", 
-                        height="50em"),
-                    footer = "SARS-CoV-2 genomes available on GISAID by country"),
-                box(
-                    plotOutput(
-                        "seq_plot", 
-                        height="42em"),
-                    footer = "SARS-CoV-2 genomes available on GISAID by collection date"))),
-        tabItem(
+       tabItem(
             tabName = "about",
             fluidPage(
                 withMathJax(),

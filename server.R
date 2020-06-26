@@ -28,9 +28,6 @@ shinyServer(function(input, output) {
     output$date_surveillance <- renderText({
         paste0("Updated : ", format(date,"%d %b %Y"))})
     
-    output$date_seq <- renderText({
-        paste0("Updated : ", format(date,"%d %b %Y"))})
-    
     # Values for the WHO AFRO region total cases and deaths
     output$total_cases <- renderText({
         paste0("WHO Afro Region Cases : ",WHO_cases_and_deaths %>% filter(date == max(date)) %>% pull(cum_cases) %>% sum())})
@@ -268,47 +265,6 @@ shinyServer(function(input, output) {
                            "iDisplayLength" = 15, 
                            "aLengthMenu"= c(15, 30, 50, 100)), 
             extensions = 'Buttons')})
-    
-    output$seq_plot <- renderPlot({
-        ggplot(AF, aes(betterDates, fill=str_wrap(country,20))) +
-            theme_bw(base_size = 20) +
-            scale_x_date(date_labels = "%d/%m") +
-            geom_bar(width=1,colour="black") +
-            ylab('SARS-CoV-2 genomes on GISAID') +
-            xlab('Sample collection date') +
-            scale_y_continuous(breaks=seq(0, 8, by = 2)) + 
-            scale_fill_brewer(palette = "BrBG") + 
-            labs(fill = 'Country') +
-            theme(panel.grid.minor.x = element_blank(),
-                  panel.grid.major.x = element_blank(),
-                  legend.position = "bottom",
-                  legend.key.size = unit(0.7, "cm"))})
-    
-    output$seq_text_overview <- renderText({
-        paste0("As of ", format(date,"%d %b %Y"),", ", length(AF$Collection.date), " SARS-CoV-2 genomes collected and sequenced in Africa have been submitted to
-               GISAID.")})
-    
-    output$seq_map <- renderLeaflet({
-        breaks <- classIntervals(africa@data$sequence, n = 4, style='jenks', na.rm=T)$brks
-        pal <- colorBin(palette = "Oranges", domain = NULL, bins = breaks, na.color = "#000000")
-        
-        leaflet(africa) %>%
-            addTiles() %>%
-            setView(lat=1.261,lng=15,zoom=3) %>%
-            setMaxBounds(lat1 = 40, lng1=-30, lat2 = -50, lng2=60) %>%
-            addPolygons(
-                stroke = FALSE,
-                smoothFactor = 0.3,
-                fillOpacity = 0.5,
-                fillColor = ~pal(sequence),
-                label = ~paste0(SOVEREIGNT, ": ", formatC(sequence, big.mark = ","))) %>%
-            addLegend(
-                pal = pal, 
-                values = ~sequence, 
-                opacity = 1.0,
-                na.label = "Non WHO Afro country",
-                position = "bottomleft",
-                title = "Sequences Collected")})
     
     output$date_data_case <- renderText({
         paste0(" (accessed 2400 ", format(date,"%d %b %Y"),").")})
